@@ -11,6 +11,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using Microsoft.IdentityModel.Tokens;
 using IdentityModel;
+using ImageGallery.Client.HttpHandlers;
 
 namespace ImageGallery.Client
 {
@@ -29,13 +30,18 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            //our BearerTokenHandler requires AddHttpContextAccessor so we register it
+            services.AddHttpContextAccessor();
+            //Transient-very short-live service
+            services.AddTransient<BearerTokenHandler>();
+
             // create an HttpClient used for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44366/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
             //create an HttpClient used for accesing the IDP}
             services.AddHttpClient("IDPClient", client =>
             {
@@ -68,6 +74,7 @@ namespace ImageGallery.Client
                      options.Scope.Add("address");//Una cosa es el scop address y otra el claim address, al agregar el scope address 
                      //decimos que la app tendra acceso a todos los claims de ese scope
                      options.Scope.Add("roles");
+                     options.Scope.Add("imagegalleryapi");
                      options.ClaimActions.MapUniqueJsonKey("role","role");
 
                      options.SaveTokens = true;
