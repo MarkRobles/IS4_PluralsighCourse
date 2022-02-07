@@ -49,6 +49,7 @@ namespace ImageGallery.Client
                      options.ResponseType = "code";
                      options.UsePkce = true;
                      //    options.CallbackPath = new PathString();
+                   //  options.SignedOutCallbackPath =  also has a default
                      options.Scope.Add("openid");
                      options.Scope.Add("profile");
                      options.SaveTokens = true;
