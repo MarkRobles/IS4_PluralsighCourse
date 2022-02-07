@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,6 +56,11 @@ namespace ImageGallery.Client
                      options.SaveTokens = true;
                      options.ClientSecret = "secret";
                      options.GetClaimsFromUserInfoEndpoint = true;
+                    // options.ClaimActions.Remove("nbf");//Remover cliam de lista de cliams no mostrados por default
+                     options.ClaimActions.DeleteClaim("sid");//No mostrar claims 
+                     options.ClaimActions.DeleteClaim("idp");
+                     options.ClaimActions.DeleteClaim("s_hash");
+                     options.ClaimActions.DeleteClaim("auth_time");
                  });
         }
 
