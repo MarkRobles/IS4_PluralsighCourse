@@ -5,18 +5,24 @@
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Marvin.IDP
 {
     public class Startup
     {
+ public IConfiguration Configuration { get; }
+
         public IWebHostEnvironment Environment { get; }
 
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment,IConfiguration configuration)
         {
             Environment = environment;
+            Configuration = configuration;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); //que no se mapeen solos los claims, ejemplo el nameidentifier .
         }
 
         public void ConfigureServices(IServiceCollection services)
