@@ -62,7 +62,8 @@ namespace ImageGallery.Client
                      options.Scope.Add("profile");
                      options.Scope.Add("address");//Una cosa es el scop address y otra el claim address, al agregar el scope address 
                      //decimos que la app tendra acceso a todos los claims de ese scope
-   
+                     options.Scope.Add("roles");
+                     options.ClaimActions.MapUniqueJsonKey("role","role");
                      options.SaveTokens = true;
                      options.ClientSecret = "secret";
                      options.GetClaimsFromUserInfoEndpoint = true;

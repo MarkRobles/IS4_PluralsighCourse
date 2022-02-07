@@ -15,7 +15,11 @@ namespace Marvin.IDP
             { 
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Address()
+                new IdentityResources.Address(),
+                new IdentityResource(
+                    "roles",
+                    "Your roles(s)",
+                    new List<string>() { "role"})
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -41,7 +45,8 @@ namespace Marvin.IDP
                 AllowedScopes={ 
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
-                IdentityServerConstants.StandardScopes.Address
+                IdentityServerConstants.StandardScopes.Address,
+                "roles"
                 },
                 ClientSecrets=
                 { 
