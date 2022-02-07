@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
+using Microsoft.IdentityModel.Tokens;
+using IdentityModel;
 
 namespace ImageGallery.Client
 {
@@ -64,6 +66,7 @@ namespace ImageGallery.Client
                      //decimos que la app tendra acceso a todos los claims de ese scope
                      options.Scope.Add("roles");
                      options.ClaimActions.MapUniqueJsonKey("role","role");
+
                      options.SaveTokens = true;
                      options.ClientSecret = "secret";
                      options.GetClaimsFromUserInfoEndpoint = true;
@@ -72,9 +75,16 @@ namespace ImageGallery.Client
                      options.ClaimActions.DeleteClaim("idp");
                      options.ClaimActions.DeleteClaim("s_hash");
                      options.ClaimActions.DeleteClaim("auth_time");
-             
-                    // options.ClaimActions.DeleteClaim("address");//No hay necesidad de borrarlo porque no esta incluido por default y no queremos
-                    //que en la cookie que ecnripta la infor del identity token se tenga toda esa info, ya que se puede llamar aparte con el userinfo endpoint
+
+                     // options.ClaimActions.DeleteClaim("address");//No hay necesidad de borrarlo porque no esta incluido por default y no queremos
+                     //que en la cookie que ecnripta la infor del identity token se tenga toda esa info, ya que se puede llamar aparte con el userinfo endpoint
+
+                     //we need to tel the framework where it cand find the user's role
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         NameClaimType = JwtClaimTypes.GivenName,
+                         RoleClaimType = JwtClaimTypes.Role
+                     };
                  });
         }
 
