@@ -44,6 +44,7 @@ namespace Marvin.IDP
                 {
                       "https://localhost:44389/signout-callback-oidc"
                 },
+                RequireConsent=true,
                 AllowedScopes={ 
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
