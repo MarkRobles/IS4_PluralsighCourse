@@ -25,7 +25,7 @@ namespace Marvin.IDP
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             { 
-                new ApiScope("imagegalleryapi","Image Gallery API")
+                new ApiScope("imagegalleryapi","Image Gallery API",   new List<string>() { "role"})
             };
 
         public static IEnumerable<Client> Clients =>
