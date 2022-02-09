@@ -48,8 +48,9 @@ namespace ImageGallery.Client.Controllers
             {
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
-                    return View(new GalleryIndexViewModel(
-                        await JsonSerializer.DeserializeAsync<List<Image>>(responseStream)));
+                    var vm = new GalleryIndexViewModel(
+                        await JsonSerializer.DeserializeAsync<List<Image>>(responseStream));
+                    return View(vm);
                 }
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||

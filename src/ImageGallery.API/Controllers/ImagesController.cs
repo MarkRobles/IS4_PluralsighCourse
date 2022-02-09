@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ImageGallery.API.Controllers
 {
@@ -35,8 +36,12 @@ namespace ImageGallery.API.Controllers
         [HttpGet()]
         public IActionResult GetImages()
         {
+            //no me retorna imagenes porque no me retorna este claim
+           var ownerId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+         //  var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
             // get from repo
-            var imagesFromRepo = _galleryRepository.GetImages();
+            var imagesFromRepo = _galleryRepository.GetImages(ownerId);
 
             // map to model
             var imagesToReturn = _mapper.Map<IEnumerable<Model.Image>>(imagesFromRepo);
