@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IdentityServer4.AccessTokenValidation;
 using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace ImageGallery.API
@@ -27,6 +29,29 @@ namespace ImageGallery.API
         {
             services.AddControllers()
                      .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            //Solo aplicaciones clientes con el token emitido por nuestro IDP IdentityServer podran acceder a lo que requiera autorizacion en nuestra api
+            services.AddAuthentication("Bearer")
+        .AddJwtBearer("Bearer", options =>
+        {
+            options.Authority = "https://localhost:5001/";
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
+        });
+
+            //Esto es para verificar que el IDP valido que el cliente tiene acceso a ese scope
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "imagegalleryclient");
+                });
+            });
+
 
             // register the DbContext on the container, getting the connection string from
             // appSettings (note: use this during development; in a production environment,
@@ -72,7 +97,11 @@ namespace ImageGallery.API
 
             app.UseStaticFiles();
 
-            app.UseRouting(); 
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

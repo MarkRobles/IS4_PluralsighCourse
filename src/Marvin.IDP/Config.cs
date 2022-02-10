@@ -24,7 +24,9 @@ namespace Marvin.IDP
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
-            { };
+            { 
+                new ApiScope("imagegalleryapi","Image Gallery API",   new List<string>() { "role"})
+            };
 
         public static IEnumerable<Client> Clients =>
             new Client[] 
@@ -42,11 +44,13 @@ namespace Marvin.IDP
                 {
                       "https://localhost:44389/signout-callback-oidc"
                 },
+                RequireConsent=true,
                 AllowedScopes={ 
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
                 IdentityServerConstants.StandardScopes.Address,
-                "roles"
+                "roles",
+                "imagegalleryapi"
                 },
                 ClientSecrets=
                 { 
