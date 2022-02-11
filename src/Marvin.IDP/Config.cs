@@ -41,6 +41,22 @@ namespace Marvin.IDP
             { 
             new Client
             { 
+               // IdentityTokenLifetime = //number of seconds, default is 5 minutes
+           
+                /*The authorization code is exchanged for one or more tokens when the token endpoint is called
+                 * that something that happens during the initial flow,  default is 5 minutes*/
+                    //AuthorizationCodeLifetime
+
+                //default is 1 hour
+                  AccessTokenLifetime =30, //we set it to litte time to try, no funciono, se supone que me deberia impedir el acceso a la api despues de 10 segundos porque el token vencia...
+                    AllowOfflineAccess =true,
+            //   AbsoluteRefreshTokenLifetime//use this property if you want to chance the default 30 days,
+               //RefreshTokenExpiration = TokenExpiration.Sliding,//once a new refresh token is requested its live time will be renueve by the SlidingRefreshTokenLifetime(opposito to absolute..)
+            // SlidingRefreshTokenLifeTime 
+               UpdateAccessTokenClaimsOnRefresh=true,
+                /*imagine one of the users claims is changed, the adress
+                by default the claims in the access token states as ther are when refreshing the access token 
+                */
                 ClientName="ImageGallery",
                 ClientId="imagegalleryclient",
                 AllowedGrantTypes= GrantTypes.Code,
