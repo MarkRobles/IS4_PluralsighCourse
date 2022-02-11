@@ -26,7 +26,24 @@ namespace IdentityServerHost.Quickstart.UI
                      new Claim("given_name", "Frank"),
                      new Claim("family_name", "Underwood"),
                      new Claim("address", "Main Road 1"),
-                     new Claim("role", "FreeUser")
+                     new Claim("role", "FreeUser"),
+                     new Claim("country", "nl"),
+                     new Claim("suscriptionlevel", "FreeUser"),
+                 }
+             },     new TestUser
+             {
+                 SubjectId = "d860efca-22d9-47fd-8249-798ba61b07c7",
+                 Username = "Marcos",
+                 Password = "password",
+
+                 Claims = new List<Claim>
+                 {
+                     new Claim("given_name", "Marcos"),
+                     new Claim("family_name", "Robles"),
+                     new Claim("address", "Lopez Mateos 456"),
+                     new Claim("role", "PayingUser"),
+                     new Claim("country", "mx"),
+                     new Claim("suscriptionlevel", "PayingUser"),
                  }
              },
              new TestUser
@@ -40,7 +57,9 @@ namespace IdentityServerHost.Quickstart.UI
                      new Claim("given_name", "Claire"),
                      new Claim("family_name", "Underwood"),
                      new Claim("address", "Big Street 2"),
-                     new Claim("role", "PayingUser")
+                     new Claim("role", "PayingUser"),
+                       new Claim("country", "be"),
+                     new Claim("suscriptionlevel", "PayingUser"),
                  }
              }
          };

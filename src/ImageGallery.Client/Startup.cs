@@ -30,6 +30,23 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+
+            services.AddAuthorization(options=>
+            {//This replaces role-based authorization. This allow more complex rules i.e
+               /*
+                A user on can order a frame of a picture if it is authenticated, it is from belgium or mexico and 
+               its suscription level is payinguser
+                */
+                options.AddPolicy(
+                    "CanOrderFrame",
+                    policyBuilder=>
+                    {
+                        policyBuilder.RequireAuthenticatedUser();
+                        policyBuilder.RequireClaim("country","be","mx");
+                        policyBuilder.RequireClaim("suscriptionlevel","PayingUser");
+                    });
+            });
+
             //our BearerTokenHandler requires AddHttpContextAccessor so we register it
             services.AddHttpContextAccessor();
             //Transient-very short-live service
@@ -75,7 +92,12 @@ namespace ImageGallery.Client
                      //decimos que la app tendra acceso a todos los claims de ese scope
                      options.Scope.Add("roles");
                      options.Scope.Add("imagegalleryapi");
+                     options.Scope.Add("country");
+                     options.Scope.Add("suscriptionlevel");
+                     //Map claims that you want to include on claims identity
                      options.ClaimActions.MapUniqueJsonKey("role","role");
+                     options.ClaimActions.MapUniqueJsonKey("country", "country");
+                     options.ClaimActions.MapUniqueJsonKey("suscriptionlevel", "suscriptionlevel");
 
                      options.SaveTokens = true;
                      options.ClientSecret = "secret";

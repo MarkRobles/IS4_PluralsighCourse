@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
+using ImageGallery.API.Authorization;
 using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +44,9 @@ namespace ImageGallery.API
             };
         });
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<IAuthorizationHandler, MustOwnImageHandler>();
+
             //Esto es para verificar que el IDP valido que el cliente tiene acceso a ese scope
             services.AddAuthorization(options =>
             {
@@ -49,6 +54,13 @@ namespace ImageGallery.API
                 {
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("scope", "imagegalleryclient");
+                });
+
+                options.AddPolicy("MustOwnImage", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.AddRequirements(
+                        new MustOwnImageRequirement());
                 });
             });
 
