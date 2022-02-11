@@ -41,6 +41,11 @@ namespace Marvin.IDP
             { 
             new Client
             { 
+                /*Al usar AccessTokenType.Reference cuando se quire autenticar a nivel api, la api llama al token instrospection endpoint del idp
+                 * para validar y obtener el contenido real del token, pero para poder hacer eso, ese endpoint requiere que estes autenticado
+                 * asi que necesitamos definir una contraseña-secret
+                 Como el cliente del token instrospection endpoint es la api, debemos definir el secret a nivel de api*/
+                AccessTokenType=AccessTokenType.Reference,
                // IdentityTokenLifetime = //number of seconds, default is 5 minutes
            
                 /*The authorization code is exchanged for one or more tokens when the token endpoint is called
