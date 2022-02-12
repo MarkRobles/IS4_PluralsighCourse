@@ -32,20 +32,11 @@ namespace ImageGallery.API
             services.AddControllers()
                      .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-            //Solo aplicaciones clientes con el token emitido por nuestro IDP IdentityServer podran acceder a lo que requiera autorizacion en nuestra api
-            services.AddAuthentication("Bearer")
-        .AddJwtBearer("Bearer", options =>
-        {
-            options.Authority = "https://localhost:5001/";
-
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false
-            };
-        });
-
             services.AddHttpContextAccessor();
+
             services.AddScoped<IAuthorizationHandler, MustOwnImageHandler>();
+
+
 
             //Esto es para verificar que el IDP valido que el cliente tiene acceso a ese scope
             services.AddAuthorization(options =>
@@ -63,6 +54,30 @@ namespace ImageGallery.API
                         new MustOwnImageRequirement());
                 });
             });
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                      .AddIdentityServerAuthentication(options =>
+                      {
+                          options.Authority = "https://localhost:5001/";
+                          options.ApiName = "imagegalleryapi";
+                          options.ApiSecret = "apisecret";
+                      });
+
+
+            //Solo aplicaciones clientes con el token emitido por nuestro IDP IdentityServer podran acceder a lo que requiera autorizacion en nuestra api
+            //    services.AddAuthentication("Bearer")
+            //.AddJwtBearer("Bearer", options =>
+            //{
+            //    options.Authority = "https://localhost:5001/";
+
+
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateAudience = false
+            //    };
+            //});
+
+
 
 
             // register the DbContext on the container, getting the connection string from

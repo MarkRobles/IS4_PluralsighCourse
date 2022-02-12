@@ -37,8 +37,8 @@ namespace ImageGallery.API.Controllers
         public IActionResult GetImages()
         {
             //no me retorna imagenes porque no me retorna este claim
-           var ownerId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-         //  var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        //  var ownerId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+          var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
             // get from repo
             var imagesFromRepo = _galleryRepository.GetImages(ownerId);
@@ -93,8 +93,8 @@ namespace ImageGallery.API.Controllers
             imageEntity.FileName = fileName;
 
             // set the ownerId on the imageEntity
-            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-            //  var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            //var ownerId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+             var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
             imageEntity.OwnerId = ownerId;
 
             // add and save.  

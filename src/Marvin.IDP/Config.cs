@@ -31,10 +31,24 @@ namespace Marvin.IDP
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
-            { 
-                new ApiScope("imagegalleryapi","Image Gallery API",   new List<string>() { "role"})
-            };
+           new ApiScope[]
+           {
+                new ApiScope(
+                    "imagegalleryapi",
+                    "Image Gallery API scope")
+           };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[] {
+                new ApiResource(
+                    "imagegalleryapi",
+                    "Image Gallery API",
+                    new[] { "role" })
+                    {
+                        Scopes = { "imagegalleryapi"},
+                        ApiSecrets = { new Secret("apisecret".Sha256())}
+                    }
+                };
 
         public static IEnumerable<Client> Clients =>
             new Client[] 
@@ -44,7 +58,7 @@ namespace Marvin.IDP
                 /*Al usar AccessTokenType.Reference cuando se quire autenticar a nivel api, la api llama al token instrospection endpoint del idp
                  * para validar y obtener el contenido real del token, pero para poder hacer eso, ese endpoint requiere que estes autenticado
                  * asi que necesitamos definir una contraseña-secret
-                 Como el cliente del token instrospection endpoint es la api, debemos definir el secret a nivel de api*/
+                 Como el cliente del token instrospection endpoint es la api, debemos definir el secret en el api resource*/
                 AccessTokenType=AccessTokenType.Reference,
                // IdentityTokenLifetime = //number of seconds, default is 5 minutes
            

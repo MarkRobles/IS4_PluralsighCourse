@@ -33,8 +33,8 @@ namespace ImageGallery.API.Authorization
 
 
             // set the ownerId on the imageEntity
-            var ownerId = context.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-            //  var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        //    var ownerId = context.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+              var ownerId = context.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
             if (!_galleryRepository.IsImageOwner(imageIdAsGuid, ownerId))
             {
