@@ -94,6 +94,7 @@ namespace ImageGallery.Client
                      options.Scope.Add("imagegalleryapi");
                      options.Scope.Add("country");
                      options.Scope.Add("suscriptionlevel");
+                     options.Scope.Add("offline_access");
                      //Map claims that you want to include on claims identity
                      options.ClaimActions.MapUniqueJsonKey("role","role");
                      options.ClaimActions.MapUniqueJsonKey("country", "country");

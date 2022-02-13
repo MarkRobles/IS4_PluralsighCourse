@@ -213,12 +213,7 @@ namespace ImageGallery.Client.Controllers
             }
         }
 
-        public async Task Logout()
-        {
-            //Clean the cookie
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-        }
+    
 
         [Authorize(Policy = "CanOrderFrame")]
    //     [Authorize("PayingUser, OtroRol , RolA, ROLB ")]

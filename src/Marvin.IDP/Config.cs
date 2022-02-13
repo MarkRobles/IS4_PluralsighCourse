@@ -31,16 +31,51 @@ namespace Marvin.IDP
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
-            { 
-                new ApiScope("imagegalleryapi","Image Gallery API",   new List<string>() { "role"})
-            };
+           new ApiScope[]
+           {
+                new ApiScope(
+                    "imagegalleryapi",
+                    "Image Gallery API scope")
+           };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[] {
+                new ApiResource(
+                    "imagegalleryapi",
+                    "Image Gallery API",
+                    new[] { "role" })
+                    {
+                        Scopes = { "imagegalleryapi"},
+                        ApiSecrets = { new Secret("apisecret".Sha256())}
+                    }
+                };
 
         public static IEnumerable<Client> Clients =>
             new Client[] 
             { 
             new Client
             { 
+                /*Al usar AccessTokenType.Reference cuando se quire autenticar a nivel api, la api llama al token instrospection endpoint del idp
+                 * para validar y obtener el contenido real del token, pero para poder hacer eso, ese endpoint requiere que estes autenticado
+                 * asi que necesitamos definir una contraseña-secret
+                 Como el cliente del token instrospection endpoint es la api, debemos definir el secret en el api resource*/
+                AccessTokenType=AccessTokenType.Reference,
+               // IdentityTokenLifetime = //number of seconds, default is 5 minutes
+           
+                /*The authorization code is exchanged for one or more tokens when the token endpoint is called
+                 * that something that happens during the initial flow,  default is 5 minutes*/
+                    //AuthorizationCodeLifetime
+
+                //default is 1 hour
+                  AccessTokenLifetime =30, //we set it to litte time to try, no funciono, se supone que me deberia impedir el acceso a la api despues de 10 segundos porque el token vencia...
+                    AllowOfflineAccess =true,
+            //   AbsoluteRefreshTokenLifetime//use this property if you want to chance the default 30 days,
+               //RefreshTokenExpiration = TokenExpiration.Sliding,//once a new refresh token is requested its live time will be renueve by the SlidingRefreshTokenLifetime(opposito to absolute..)
+            // SlidingRefreshTokenLifeTime 
+               UpdateAccessTokenClaimsOnRefresh=true,
+                /*imagine one of the users claims is changed, the adress
+                by default the claims in the access token states as ther are when refreshing the access token 
+                */
                 ClientName="ImageGallery",
                 ClientId="imagegalleryclient",
                 AllowedGrantTypes= GrantTypes.Code,
