@@ -67,7 +67,7 @@ namespace Marvin.IDP
                     //AuthorizationCodeLifetime
 
                 //default is 1 hour
-                  AccessTokenLifetime =30, //we set it to litte time to try, no funciono, se supone que me deberia impedir el acceso a la api despues de 10 segundos porque el token vencia...
+              //    AccessTokenLifetime 120, //we set it to litte time to try, no funciono, se supone que me deberia impedir el acceso a la api despues de 10 segundos porque el token vencia...
                     AllowOfflineAccess =true,
             //   AbsoluteRefreshTokenLifetime//use this property if you want to chance the default 30 days,
                //RefreshTokenExpiration = TokenExpiration.Sliding,//once a new refresh token is requested its live time will be renueve by the SlidingRefreshTokenLifetime(opposito to absolute..)
