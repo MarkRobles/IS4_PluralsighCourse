@@ -52,7 +52,12 @@ namespace Marvin.IDP
                          {
                              options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
                                  sql => sql.MigrationsAssembly(migrationsAssembly));
-                         });
+                         })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                });
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -87,8 +92,8 @@ namespace Marvin.IDP
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                //Esto solo aplica para la migration de operational data
-             //   serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                //Esto solo aplica para la migration de operational data, asegurar que se aplique la migracion
+                   serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
